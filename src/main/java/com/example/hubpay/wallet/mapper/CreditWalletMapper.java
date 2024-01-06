@@ -14,11 +14,16 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public class CreditWalletMapper {
+
+    private CreditWalletMapper() {
+
+    }
+
     public static CreditWalletData toCreditWalletData(CreditWalletRequest request) {
         return CreditWalletData.builder()
                 .walletId(WalletId.of(UUID.fromString(request.walletId())))
                 .customerId(CustomerId.of(UUID.fromString(request.customerId())))
-                .amount(MonetaryAmount.of(new BigDecimal(request.amount())))
+                .amount(MonetaryAmount.of(new BigDecimal(request.amount()), request.currency()))
                 .description(request.description())
                 .build();
     }
@@ -27,7 +32,7 @@ public class CreditWalletMapper {
         return CreditWalletResult.builder()
                 .transactionId(TransactionId.of(transaction.getId()))
                 .walletId(WalletId.of(transaction.getWalletId()))
-                .amount(MonetaryAmount.of(transaction.getAmount()))
+                .amount(MonetaryAmount.of(transaction.getAmount(), transaction.getCurrency()))
                 .customerId(CustomerId.of(transaction.getCustomerId()))
                 .description(transaction.getDescription())
                 .build();

@@ -40,6 +40,7 @@ class CreditWalletControllerIT {
                                     "walletId": "f9d5b369-89a4-4383-9957-a7bd98236c3f",
                                     "customerId": "77590ca1-6c7a-4819-8e82-aab1c5386536",
                                     "amount": "500",
+                                    "currency": "EUR",
                                     "description": "test transaction"
                                 }
                                 """)
@@ -58,10 +59,23 @@ class CreditWalletControllerIT {
                                     "walletId": "f9d5b369-89a4-4383-9957-a7bd98236c3f",
                                     "customerId": "77590ca1-6c7a-4819-8e82-aab1c5386535",
                                     "amount": "500",
+                                    "currency": "EUR",
                                     "description": "test transaction"
                                 }
                                 """)
                 )
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().json("""
+                        {
+                            "errors": [
+                                {
+                                    "code": "400 BAD_REQUEST",
+                                    "message": "Customer not found for id: 77590ca1-6c7a-4819-8e82-aab1c5386535"
+                                }
+                            ]
+                        }
+                        """, true));
     }
+
+    //TODO: test other validations
 }

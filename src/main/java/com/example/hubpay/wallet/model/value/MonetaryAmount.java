@@ -7,13 +7,16 @@ import java.util.Objects;
 
 public record MonetaryAmount(
         @Nonnull
-        BigDecimal amount
+        BigDecimal amount,
+        @Nonnull
+        String currency
 ) {
     public MonetaryAmount {
         Objects.requireNonNull(amount, "amount cannot be null");
+        Objects.requireNonNull(currency, "currency cannot be null");
     }
 
-    public static MonetaryAmount of(BigDecimal value) {
-        return new MonetaryAmount(value);
+    public static MonetaryAmount of(BigDecimal value, String currency) {
+        return new MonetaryAmount(value, currency);
     }
 }

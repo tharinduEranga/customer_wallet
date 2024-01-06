@@ -19,6 +19,7 @@ public class CreditTransaction {
     private UUID customerId;
 
     private BigDecimal amount;
+    private String currency;
 
     private BigDecimal balanceBefore;
 
@@ -31,11 +32,12 @@ public class CreditTransaction {
     public CreditTransaction() {
     }
 
-    public CreditTransaction(UUID walletId, UUID customerId, BigDecimal amount, BigDecimal balanceBefore, BigDecimal balanceAfter, OffsetDateTime createdAt, String description) {
+    public CreditTransaction(UUID walletId, UUID customerId, BigDecimal amount, String currency, BigDecimal balanceBefore, BigDecimal balanceAfter, OffsetDateTime createdAt, String description) {
         this.id = UUID.randomUUID();
         this.walletId = walletId;
         this.customerId = customerId;
         this.amount = amount;
+        this.currency = currency;
         this.balanceBefore = balanceBefore;
         this.balanceAfter = balanceAfter;
         this.createdAt = createdAt;
@@ -56,6 +58,10 @@ public class CreditTransaction {
 
     public BigDecimal getAmount() {
         return amount;
+    }
+
+    public String getCurrency() {
+        return currency;
     }
 
     public BigDecimal getBalanceBefore() {
@@ -94,6 +100,7 @@ public class CreditTransaction {
         private UUID walletId;
         private UUID customerId;
         private BigDecimal amount;
+        private String currency;
         private BigDecimal balanceBefore;
         private BigDecimal balanceAfter;
         private OffsetDateTime createdAt;
@@ -121,6 +128,11 @@ public class CreditTransaction {
             return this;
         }
 
+        public Builder currency(String val) {
+            currency = val;
+            return this;
+        }
+
         public Builder balanceBefore(BigDecimal val) {
             balanceBefore = val;
             return this;
@@ -142,7 +154,7 @@ public class CreditTransaction {
         }
 
         public CreditTransaction build() {
-            return new CreditTransaction(walletId, customerId, amount, balanceBefore, balanceAfter, createdAt, description);
+            return new CreditTransaction(walletId, customerId, amount, currency, balanceBefore, balanceAfter, createdAt, description);
         }
     }
 }

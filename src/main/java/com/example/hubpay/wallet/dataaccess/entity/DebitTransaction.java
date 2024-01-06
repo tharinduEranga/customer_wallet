@@ -18,6 +18,7 @@ public class DebitTransaction {
     private UUID walletId;
 
     private BigDecimal amount;
+    private String currency;
 
     private BigDecimal balanceBefore;
 
@@ -28,10 +29,11 @@ public class DebitTransaction {
     public DebitTransaction() {
     }
 
-    public DebitTransaction(UUID walletId, BigDecimal amount, BigDecimal balanceBefore, BigDecimal balanceAfter, OffsetDateTime createdAt) {
+    public DebitTransaction(UUID walletId, BigDecimal amount, String currency, BigDecimal balanceBefore, BigDecimal balanceAfter, OffsetDateTime createdAt) {
         this.id = UUID.randomUUID();
         this.walletId = walletId;
         this.amount = amount;
+        this.currency = currency;
         this.balanceBefore = balanceBefore;
         this.balanceAfter = balanceAfter;
         this.createdAt = createdAt;
@@ -47,6 +49,10 @@ public class DebitTransaction {
 
     public BigDecimal getAmount() {
         return amount;
+    }
+
+    public String getCurrency() {
+        return currency;
     }
 
     public BigDecimal getBalanceBefore() {

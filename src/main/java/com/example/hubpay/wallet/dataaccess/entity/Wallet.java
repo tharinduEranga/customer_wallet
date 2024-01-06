@@ -18,16 +18,18 @@ public class Wallet {
     private UUID customerId;
 
     private BigDecimal balance;
+    private String currency;
 
     private OffsetDateTime createdAt;
 
     public Wallet() {
     }
 
-    public Wallet(UUID customerId, BigDecimal balance) {
+    public Wallet(UUID customerId, BigDecimal balance, String currency) {
         this.id = UUID.randomUUID();
         this.customerId = customerId;
         this.balance = balance;
+        this.currency = currency;
         this.createdAt = OffsetDateTime.now();
     }
 
@@ -37,6 +39,10 @@ public class Wallet {
 
     public BigDecimal getBalance() {
         return balance;
+    }
+
+    public String getCurrency() {
+        return currency;
     }
 
     public void setBalance(BigDecimal balance) {
