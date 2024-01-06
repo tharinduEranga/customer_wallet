@@ -10,6 +10,7 @@ import com.example.hubpay.wallet.mapper.CreditWalletMapper;
 import com.example.hubpay.wallet.model.CreditWalletData;
 import com.example.hubpay.wallet.model.CreditWalletResult;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -26,12 +27,14 @@ public class WalletCreditor {
     private final CustomerRepository customerRepository;
 
     public WalletCreditor(final CreditTransactionRepository creditTransactionRepository,
-                          final WalletRepository walletRepository, CustomerRepository customerRepository) {
+                          final WalletRepository walletRepository,
+                          final CustomerRepository customerRepository) {
         this.creditTransactionRepository = creditTransactionRepository;
         this.walletRepository = walletRepository;
         this.customerRepository = customerRepository;
     }
 
+    @Transactional
     public CreditWalletResult execute(CreditWalletData creditWalletData) {
         // validate customer
         if (!customerRepository.existsById(creditWalletData.customerId().value())) {
@@ -64,6 +67,10 @@ public class WalletCreditor {
                 .customerId(creditWalletData.customerId().value())
                 .build();
         transaction = creditTransactionRepository.save(transaction);
+
+        wallet.credit(transaction.getAmount());
+        walletRepository.save(wallet);
+
         return CreditWalletMapper.toCreditWalletResult(transaction);
     }
 }

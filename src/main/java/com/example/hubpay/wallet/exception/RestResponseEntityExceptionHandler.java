@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,6 +31,14 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return handleExceptionInternal(ex,
                 getErrorResponse(HttpStatus.BAD_REQUEST.toString(), ex.getMessage()),
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(value = {ObjectOptimisticLockingFailureException.class})
+    protected ResponseEntity<Object> handleUnknown(ObjectOptimisticLockingFailureException ex, WebRequest request) {
+        ex.printStackTrace();
+        return handleExceptionInternal(ex,
+                getErrorResponse(HttpStatus.CONFLICT.toString(), "Concurrent transaction, please try again!"),
+                new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
     @ExceptionHandler(value = {Exception.class})

@@ -17,7 +17,10 @@ public class DebitTransaction {
 
     private UUID walletId;
 
+    private UUID customerId;
+
     private BigDecimal amount;
+
     private String currency;
 
     private BigDecimal balanceBefore;
@@ -26,17 +29,25 @@ public class DebitTransaction {
 
     private OffsetDateTime createdAt;
 
+    private String description;
+
     public DebitTransaction() {
     }
 
-    public DebitTransaction(UUID walletId, BigDecimal amount, String currency, BigDecimal balanceBefore, BigDecimal balanceAfter, OffsetDateTime createdAt) {
+    public DebitTransaction(UUID walletId, UUID customerId, BigDecimal amount, String currency, BigDecimal balanceBefore, BigDecimal balanceAfter, OffsetDateTime createdAt, String description) {
         this.id = UUID.randomUUID();
         this.walletId = walletId;
+        this.customerId = customerId;
         this.amount = amount;
         this.currency = currency;
         this.balanceBefore = balanceBefore;
         this.balanceAfter = balanceAfter;
         this.createdAt = createdAt;
+        this.description = description;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public UUID getId() {
@@ -45,6 +56,10 @@ public class DebitTransaction {
 
     public UUID getWalletId() {
         return walletId;
+    }
+
+    public UUID getCustomerId() {
+        return customerId;
     }
 
     public BigDecimal getAmount() {
@@ -67,6 +82,10 @@ public class DebitTransaction {
         return createdAt;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -77,5 +96,74 @@ public class DebitTransaction {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+
+    public static final class Builder {
+        private UUID id;
+        private UUID walletId;
+        private UUID customerId;
+        private BigDecimal amount;
+        private String currency;
+        private BigDecimal balanceBefore;
+        private BigDecimal balanceAfter;
+        private OffsetDateTime createdAt;
+        private String description;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder id(UUID val) {
+            id = val;
+            return this;
+        }
+
+        public Builder walletId(UUID val) {
+            walletId = val;
+            return this;
+        }
+
+        public Builder customerId(UUID val) {
+            customerId = val;
+            return this;
+        }
+
+        public Builder amount(BigDecimal val) {
+            amount = val;
+            return this;
+        }
+
+        public Builder currency(String val) {
+            currency = val;
+            return this;
+        }
+
+        public Builder balanceBefore(BigDecimal val) {
+            balanceBefore = val;
+            return this;
+        }
+
+        public Builder balanceAfter(BigDecimal val) {
+            balanceAfter = val;
+            return this;
+        }
+
+        public Builder createdAt(OffsetDateTime val) {
+            createdAt = val;
+            return this;
+        }
+
+        public Builder description(String val) {
+            description = val;
+            return this;
+        }
+
+        public DebitTransaction build() {
+            return new DebitTransaction(walletId, customerId, amount, currency, balanceBefore, balanceAfter, createdAt, description);
+        }
     }
 }

@@ -1,8 +1,10 @@
 package com.example.hubpay.wallet.dataaccess.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -21,6 +23,13 @@ public class Wallet {
     private String currency;
 
     private OffsetDateTime createdAt;
+
+    /**
+     * this is used by the database for optimistic locking
+     */
+    @Version
+    @Column(columnDefinition="BIGINT default '0'")
+    private Long version;
 
     public Wallet() {
     }
@@ -45,8 +54,12 @@ public class Wallet {
         return currency;
     }
 
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
+    public void credit(BigDecimal amount) {
+        this.balance = balance.add(amount);
+    }
+
+    public void debit(BigDecimal amount) {
+        this.balance = balance.subtract(amount);
     }
 
     public UUID getCustomerId() {
