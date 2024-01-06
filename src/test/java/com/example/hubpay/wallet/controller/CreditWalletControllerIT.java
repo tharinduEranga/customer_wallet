@@ -1,5 +1,6 @@
 package com.example.hubpay.wallet.controller;
 
+import com.example.hubpay.wallet.dataaccess.repository.WalletRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +13,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.math.BigDecimal;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -21,6 +26,9 @@ class CreditWalletControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private WalletRepository walletRepository;
 
     @BeforeEach
     void setUp() {
@@ -33,20 +41,28 @@ class CreditWalletControllerIT {
     @Test
     @DisplayName("GIVEN valid credit transaction data WHEN call credit wallet api THEN success response is returned")
     void creditTransactionSuccessTest() throws Exception {
+        final var walletId = UUID.fromString("f9d5b369-89a4-4383-9957-a7bd98236c3f");
+        final var amount = new BigDecimal("500");
+        final var oldBalance = walletRepository.findById(walletId).orElseThrow().getBalance();
+
         mockMvc.perform(MockMvcRequestBuilders.post("/credit-wallet/credit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
-                                    "walletId": "f9d5b369-89a4-4383-9957-a7bd98236c3f",
+                                    "walletId": "%s",
                                     "customerId": "77590ca1-6c7a-4819-8e82-aab1c5386536",
-                                    "amount": "500",
+                                    "amount": "%s",
                                     "currency": "EUR",
                                     "description": "test transaction"
                                 }
-                                """)
+                                """.formatted(walletId.toString(), amount.toString()))
                 )
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$.transactionId").isNotEmpty());
+
+        final var newBalance = walletRepository.findById(walletId).orElseThrow().getBalance();
+
+        assertEquals(oldBalance.add(amount), newBalance);
     }
 
     @Test
