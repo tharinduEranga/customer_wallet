@@ -1,0 +1,173 @@
+{
+	"info": {
+		"_postman_id": "0f6ef7e9-86aa-45e4-81b2-782ed9f1f8a5",
+		"name": "Wallet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23384953",
+		"_collection_link": "https://avabsfdv.postman.co/workspace/BSF-Open-Banking~414908cb-4a4c-4226-8536-1c8555f2b2d2/collection/23384953-0f6ef7e9-86aa-45e4-81b2-782ed9f1f8a5?action=share&source=collection_link&creator=23384953"
+	},
+	"item": [
+		{
+			"name": "Credit wallet",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"walletId\": \"f9d5b369-89a4-4383-9957-a7bd98236c3f\",\n    \"customerId\": \"77590ca1-6c7a-4819-8e82-aab1c5386536\",\n    \"amount\": \"500\",\n    \"currency\": \"EUR\",\n    \"description\": \"test transaction\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/credit-wallet/credit",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"credit-wallet",
+						"credit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Debit wallet",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"walletId\": \"f9d5b369-89a4-4383-9957-a7bd98236c3f\",\n    \"customerId\": \"77590ca1-6c7a-4819-8e82-aab1c5386536\",\n    \"amount\": \"500\",\n    \"currency\": \"EUR\",\n    \"description\": \"test transaction\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/credit-wallet/credit",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"credit-wallet",
+						"credit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch Transactions",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"walletId\": \"f9d5b369-89a4-4383-9957-a7bd98236c3f\",\n    \"customerId\": \"77590ca1-6c7a-4819-8e82-aab1c5386536\",\n    \"amount\": \"500\",\n    \"currency\": \"EUR\",\n    \"description\": \"test transaction\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/transaction/fetch?page=0&size=10",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"transaction",
+						"fetch"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success response",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"walletId\": \"f9d5b369-89a4-4383-9957-a7bd98236c3f\",\n    \"customerId\": \"77590ca1-6c7a-4819-8e82-aab1c5386536\",\n    \"amount\": \"500\",\n    \"currency\": \"EUR\",\n    \"description\": \"test transaction\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/transaction/fetch?page=0&size=10",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"transaction",
+								"fetch"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 07 Jan 2024 08:10:34 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"content\": [\n        {\n            \"transactionId\": \"67b28c97-a765-4336-ac77-95e49cc7ee6b\",\n            \"walletId\": \"f9d5b369-89a4-4383-9957-a7bd98236c3f\",\n            \"customerId\": \"77590ca1-6c7a-4819-8e82-aab1c5386536\",\n            \"amount\": \"500.00\",\n            \"currency\": \"EUR\",\n            \"type\": \"Debit\",\n            \"balanceBefore\": \"1000.00\",\n            \"balanceAfter\": \"500.00\",\n            \"createdAt\": \"2024-01-07T12:10:27.332691+04:00\",\n            \"description\": \"test transaction\"\n        },\n        {\n            \"transactionId\": \"ec96bb35-c090-4479-810c-00faa117725f\",\n            \"walletId\": \"f9d5b369-89a4-4383-9957-a7bd98236c3f\",\n            \"customerId\": \"77590ca1-6c7a-4819-8e82-aab1c5386536\",\n            \"amount\": \"500.00\",\n            \"currency\": \"EUR\",\n            \"type\": \"Credit\",\n            \"balanceBefore\": \"500.00\",\n            \"balanceAfter\": \"0.00\",\n            \"createdAt\": \"2024-01-07T12:10:27.569313+04:00\",\n            \"description\": \"test transaction\"\n        }\n    ],\n    \"pageable\": {\n        \"pageNumber\": 0,\n        \"pageSize\": 10,\n        \"sort\": {\n            \"empty\": true,\n            \"unsorted\": true,\n            \"sorted\": false\n        },\n        \"offset\": 0,\n        \"paged\": true,\n        \"unpaged\": false\n    },\n    \"last\": true,\n    \"totalPages\": 1,\n    \"totalElements\": 2,\n    \"first\": true,\n    \"size\": 10,\n    \"number\": 0,\n    \"sort\": {\n        \"empty\": true,\n        \"unsorted\": true,\n        \"sorted\": false\n    },\n    \"numberOfElements\": 2,\n    \"empty\": false\n}"
+				}
+			]
+		}
+	]
+}
