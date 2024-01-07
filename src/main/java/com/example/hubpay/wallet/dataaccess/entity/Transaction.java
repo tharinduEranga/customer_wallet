@@ -1,6 +1,9 @@
 package com.example.hubpay.wallet.dataaccess.entity;
 
+import com.example.hubpay.wallet.model.TransactionFetchResult;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -10,8 +13,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "credit_transaction")
-public class CreditTransaction {
+@Table(name = "transaction")
+public class Transaction {
     @Id
     private UUID id;
 
@@ -29,10 +32,13 @@ public class CreditTransaction {
 
     private String description;
 
-    public CreditTransaction() {
+    @Enumerated(EnumType.STRING)
+    private TransactionFetchResult.TransactionType type;
+
+    public Transaction() {
     }
 
-    public CreditTransaction(UUID walletId, UUID customerId, BigDecimal amount, String currency, BigDecimal balanceBefore, BigDecimal balanceAfter, OffsetDateTime createdAt, String description) {
+    public Transaction(UUID walletId, UUID customerId, BigDecimal amount, String currency, BigDecimal balanceBefore, BigDecimal balanceAfter, OffsetDateTime createdAt, String description, TransactionFetchResult.TransactionType type) {
         this.id = UUID.randomUUID();
         this.walletId = walletId;
         this.customerId = customerId;
@@ -42,6 +48,7 @@ public class CreditTransaction {
         this.balanceAfter = balanceAfter;
         this.createdAt = createdAt;
         this.description = description;
+        this.type = type;
     }
 
     public UUID getId() {
@@ -80,10 +87,14 @@ public class CreditTransaction {
         return description;
     }
 
+    public TransactionFetchResult.TransactionType getType() {
+        return type;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CreditTransaction that)) return false;
+        if (!(o instanceof Transaction that)) return false;
         return id.equals(that.id);
     }
 
@@ -105,6 +116,7 @@ public class CreditTransaction {
         private BigDecimal balanceAfter;
         private OffsetDateTime createdAt;
         private String description;
+        private TransactionFetchResult.TransactionType type;
 
         private Builder() {
         }
@@ -153,8 +165,13 @@ public class CreditTransaction {
             return this;
         }
 
-        public CreditTransaction build() {
-            return new CreditTransaction(walletId, customerId, amount, currency, balanceBefore, balanceAfter, createdAt, description);
+        public Builder type(TransactionFetchResult.TransactionType val) {
+            type = val;
+            return this;
+        }
+
+        public Transaction build() {
+            return new Transaction(walletId, customerId, amount, currency, balanceBefore, balanceAfter, createdAt, description, type);
         }
     }
 }

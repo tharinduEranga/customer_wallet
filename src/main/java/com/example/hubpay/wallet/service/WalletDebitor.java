@@ -1,7 +1,7 @@
 package com.example.hubpay.wallet.service;
 
-import com.example.hubpay.wallet.dataaccess.entity.DebitTransaction;
-import com.example.hubpay.wallet.dataaccess.repository.DebitTransactionRepository;
+import com.example.hubpay.wallet.dataaccess.entity.Transaction;
+import com.example.hubpay.wallet.dataaccess.repository.TransactionRepository;
 import com.example.hubpay.wallet.dataaccess.repository.CustomerRepository;
 import com.example.hubpay.wallet.dataaccess.repository.WalletRepository;
 import com.example.hubpay.wallet.exception.custom.BusinessRuleViolationException;
@@ -9,6 +9,7 @@ import com.example.hubpay.wallet.exception.custom.NotFoundException;
 import com.example.hubpay.wallet.mapper.DebitWalletMapper;
 import com.example.hubpay.wallet.model.DebitWalletData;
 import com.example.hubpay.wallet.model.DebitWalletResult;
+import com.example.hubpay.wallet.model.TransactionFetchResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,11 +22,11 @@ public class WalletDebitor {
     private static final BigDecimal MAX_AMOUNT = new BigDecimal("5000");
     private static final String CURRENCY_EUR = "EUR";
 
-    private final DebitTransactionRepository debitTransactionRepository;
+    private final TransactionRepository debitTransactionRepository;
     private final WalletRepository walletRepository;
     private final CustomerRepository customerRepository;
 
-    public WalletDebitor(final DebitTransactionRepository debitTransactionRepository,
+    public WalletDebitor(final TransactionRepository debitTransactionRepository,
                          final WalletRepository walletRepository,
                          final CustomerRepository customerRepository) {
         this.debitTransactionRepository = debitTransactionRepository;
@@ -57,7 +58,7 @@ public class WalletDebitor {
             throw new BusinessRuleViolationException("Not enough balance available for the transaction!");
         }
 
-        var transaction = DebitTransaction.builder()
+        var transaction = Transaction.builder()
                 .walletId(debitWalletData.walletId().value())
                 .amount(debitWalletData.amount().amount())
                 .currency(debitWalletData.amount().currency())
@@ -65,6 +66,8 @@ public class WalletDebitor {
                 .balanceBefore(wallet.getBalance())
                 .balanceAfter(wallet.getBalance().add(debitWalletData.amount().amount()))
                 .customerId(debitWalletData.customerId().value())
+                .type(TransactionFetchResult.TransactionType.DEBIT)
+                .description(debitWalletData.description())
                 .build();
         transaction = debitTransactionRepository.save(transaction);
 

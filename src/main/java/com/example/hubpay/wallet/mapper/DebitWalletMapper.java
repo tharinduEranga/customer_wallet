@@ -2,7 +2,7 @@ package com.example.hubpay.wallet.mapper;
 
 import com.example.hubpay.wallet.api.request.DebitWalletRequest;
 import com.example.hubpay.wallet.api.response.DebitWalletResponse;
-import com.example.hubpay.wallet.dataaccess.entity.DebitTransaction;
+import com.example.hubpay.wallet.dataaccess.entity.Transaction;
 import com.example.hubpay.wallet.model.DebitWalletData;
 import com.example.hubpay.wallet.model.DebitWalletResult;
 import com.example.hubpay.wallet.model.value.CustomerId;
@@ -28,7 +28,7 @@ public class DebitWalletMapper {
                 .build();
     }
 
-    public static DebitWalletResult toDebitWalletResult(DebitTransaction transaction) {
+    public static DebitWalletResult toDebitWalletResult(Transaction transaction) {
         return DebitWalletResult.builder()
                 .transactionId(TransactionId.of(transaction.getId()))
                 .walletId(WalletId.of(transaction.getWalletId()))
