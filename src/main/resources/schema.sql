@@ -12,22 +12,14 @@ CREATE TABLE IF NOT EXISTS wallet(
     created_at TIMESTAMP NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS credit_transaction(
+CREATE TABLE IF NOT EXISTS transaction(
     id VARCHAR(20) PRIMARY KEY,
     wallet_id VARCHAR(20) NOT NULL,
     amount DECIMAL(10, 2) NOT NULL,
     currency VARCHAR(10) NOT NULL,
     balance_before DECIMAL(10, 2) NOT NULL,
     balance_after DECIMAL(10, 2) NOT NULL,
-    created_at TIMESTAMP NOT NULL
+    created_at TIMESTAMP NOT NULL,
+    description VARCHAR(50) NULL
 );
 
-CREATE TABLE IF NOT EXISTS debit_transaction(
-    id VARCHAR(20) PRIMARY KEY,
-    wallet_id VARCHAR(20) NOT NULL,
-    amount DECIMAL(10, 2) NOT NULL,
-    currency VARCHAR(10) NOT NULL,
-    balance_before DECIMAL(10, 2) NOT NULL,
-    balance_after DECIMAL(10, 2) NOT NULL,
-    created_at TIMESTAMP NOT NULL
-);
